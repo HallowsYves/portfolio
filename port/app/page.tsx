@@ -19,10 +19,10 @@ const DISCS: Disc[] = [
     artist: 'The Developer',
     year: '1995',
     color: 'from-amber-500 to-orange-600',
+    image:'/7ae040a97b3e8b6fdaf838c1c76be543.jpg',
     trackList: ['Intro', 'Skills', 'History'],
     content: (
       <div className="space-y-4 font-mono text-sm md:text-base leading-relaxed text-amber-100">
-        <p className="typing-effect">Initializing identity protocols...</p>
         <h2 className="text-xl md:text-2xl font-bold text-amber-500 mb-4 mt-6">TRACK 01: ORIGIN</h2>
         <p>I am a creative developer with a passion for retro aesthetics and modern performance.</p>
         <h2 className="text-xl md:text-2xl font-bold text-amber-500 mb-4 mt-8">TRACK 02: STACK</h2>
@@ -110,10 +110,7 @@ export default function Portfolio() {
         <div className="w-full md:w-5/12 lg:w-1/3 bg-[#222] p-6 flex flex-col relative border-b md:border-b-0 md:border-r border-black/50 z-20 shadow-xl">
           <div className="flex justify-between items-center mb-8">
             <div className="flex items-center space-x-2">
-              <Power className="w-4 h-4 text-green-500 animate-pulse" />
-              <span className="text-xs font-mono text-white/40 tracking-widest">SYSTEM_READY</span>
             </div>
-            <Volume2 className="w-5 h-5 text-white/40" />
           </div>
 
           <div className="flex-grow flex flex-col items-center justify-center relative">

@@ -29,7 +29,7 @@ export default function JewelCaseSpine({ disc, onClick, disabled }: JewelCaseSpi
         <span className="writing-vertical text-[10px] font-bold tracking-widest text-black/60 uppercase">
             Vol. {disc.year}
         </span>
-        <h3 className="writing-vertical text-lg md:text-xl font-black tracking-widest text-white drop-shadow-md whitespace-nowrap">
+        <h3 className="[writing-mode:vertical-rl] rotate-180 text-sm md:text-base font-black tracking-widest text-white drop-shadow-md whitespace-nowrap uppercase"> 
             {disc.title}
         </h3>
         <div className="w-1 h-8 bg-black/20 rounded-full" />

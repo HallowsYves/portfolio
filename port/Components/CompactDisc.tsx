@@ -1,5 +1,6 @@
 import React from 'react';
 import { Disc } from '@/types';
+import Image from 'next/image';
 
 interface CompactDiscProps {
   disc: Disc;
@@ -10,7 +11,7 @@ export default function CompactDisc({ disc, isSpinning }: CompactDiscProps) {
   return (
     <div className={`relative w-64 h-64 rounded-full shadow-2xl flex items-center justify-center overflow-hidden transition-all duration-1000 ${isSpinning ? 'animate-spin-slow' : ''}`}>
         {/* Disc Surface */}
-        <div className={`absolute inset-0 bg-gradient-to-br ${disc.color} opacity-90`} />
+        <div className={`absolute inset-0 bg-gradient-to-br opacity-90`} />
         
         {/* Holographic Reflection */}
         <div className="absolute inset-0 bg-[conic-gradient(from_0deg,transparent_0deg,white_45deg,transparent_90deg,transparent_180deg,white_225deg,transparent_270deg)] opacity-30 mix-blend-overlay" />
@@ -22,8 +23,15 @@ export default function CompactDisc({ disc, isSpinning }: CompactDiscProps) {
         
         {/* Label Art */}
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8 rotate-90">
-        <span className="text-white/80 font-bold text-xl drop-shadow-lg tracking-wider">{disc.artist}</span>
-        <span className="text-white font-black text-3xl uppercase tracking-tighter leading-none mt-1">{disc.title}</span>
+          <div className="absolute inset-0 overflow-hidden rounded-full">
+            <Image 
+              src={disc.image} 
+              alt={disc.title} 
+              fill 
+              className="object-cover"
+              sizes="256px" 
+            />
+          </div>
         </div>
 
         {/* Center Spindle/Hub Mechanism */}
@@ -34,10 +42,6 @@ export default function CompactDisc({ disc, isSpinning }: CompactDiscProps) {
         {/* Inner Clamp */}
         <div className="w-8 h-8 bg-[#111] rounded-full border border-white/5 flex items-center justify-center shadow-inner relative">
             <div className="w-2 h-2 bg-[#050505] rounded-full border border-white/10"></div>
-            {/* 3 locking teeth */}
-            <div className="absolute top-0 w-1 h-2 bg-[#333] rounded-full"></div>
-            <div className="absolute bottom-1 left-1 w-1 h-2 bg-[#333] rounded-full rotate-[120deg]"></div>
-            <div className="absolute bottom-1 right-1 w-1 h-2 bg-[#333] rounded-full -rotate-[120deg]"></div>
         </div>
         </div>
     </div>

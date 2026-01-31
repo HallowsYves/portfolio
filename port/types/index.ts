@@ -6,6 +6,7 @@ export interface Disc {
   artist: string;
   year: string;
   color: string;
+  image: string;
   trackList: string[];
   content: ReactNode; 
 }
