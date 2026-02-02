@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import CompactDisc from '@/Components/CompactDisc';
 import { Disc } from '@/types';
+import coverImage from '@/public/cover.jpg';
 
 // Focused Data
 const ABOUT_DISC: Disc = {
@@ -11,9 +12,9 @@ const ABOUT_DISC: Disc = {
   artist: 'The Developer',
   year: '1995',
   color: 'from-amber-500 to-orange-600',
-  image: '/7ae040a97b3e8b6fdaf838c1c76be543.jpg',
+  image: coverImage,
   trackList: ['Intro', 'Skills', 'History'],
-  content: null // Content is handled separately or ignored for the simple view
+  content: null 
 };
 
 export default function SimpleDiscView() {
@@ -25,9 +26,10 @@ export default function SimpleDiscView() {
       {/* Container for the Disc */}
       <style jsx global>
         {`
-        .animate-spin-slow { animation: spin 0.1s linear infinite; }
+        .compact-disc { animation: spin 1s linear infinite; transition: animation-play-state 2s ease-out; }
+        .is-playing {animation-play-state: running;}
+        .is-paused {animation-play-state: paused;}
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .animate-fade-in-up { animation: fadeInUp 0.5s ease-out forwards; }
       `}
       </style>
       <div 

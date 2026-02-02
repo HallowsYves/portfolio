@@ -9,7 +9,7 @@ interface CompactDiscProps {
 
 export default function CompactDisc({ disc, isSpinning }: CompactDiscProps) {
   return (
-    <div className={`relative w-64 h-64 rounded-full shadow-2xl flex items-center justify-center overflow-hidden transition-all duration-1000 ${isSpinning ? 'animate-spin-slow' : ''}`}>
+    <div className={`relative w-64 h-64 rounded-full shadow-2xl flex items-center justify-center overflow-hidden transition-all duration-1000 compact-disc ${isSpinning ? 'is-playing' : 'is-paused'}`}>
         {/* Disc Surface */}
         <div className={`absolute inset-0 bg-gradient-to-br opacity-90`} />
         

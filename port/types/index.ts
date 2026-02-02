@@ -1,3 +1,4 @@
+import { StaticImageData } from 'next/image';
 import { ReactNode } from 'react';
 
 export interface Disc {
@@ -6,7 +7,7 @@ export interface Disc {
   artist: string;
   year: string;
   color: string;
-  image: string;
+  image: StaticImageData | string;
   trackList: string[];
   content: ReactNode; 
 }
