@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, use } from "react";
 import CompactDisc from "@/Components/CompactDisc";
 import { Disc } from "@/types";
 import coverImage from "@/public/bfd476072d2e25015d933be8d6fa0570.jpg";
@@ -22,12 +22,19 @@ export default function SimpleDiscView() {
   const [angle, setAngle] = useState(0);
   const [rotationSpeed, setRotationSpeed] = useState(0);
   
+  const resetSpeed = 0;
   const acceleration = 0.3;  
   const maxSpeed = 25;        
   const friction = 0.95;     
   
   const animationFrameId = useRef<number | null>(null);
   
+  useEffect(() => {
+    if (isSpinning) {
+      setRotationSpeed(resetSpeed);
+    }
+  }, [isSpinning]);
+
   const updateRotation = () => {
     if (isSpinning) {
       setRotationSpeed((prevSpeed) => {
