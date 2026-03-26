@@ -10,7 +10,7 @@ interface CompactDiscProps {
 
 export default function CompactDisc({ disc, isSpinning, angle }: CompactDiscProps) {
   return (
-    <div className="relative w-120 h-120 rounded-full shadow-2xl flex items-center justify-center overflow-hidden">
+    <div className="relative w-full h-full rounded-full shadow-2xl flex items-center justify-center overflow-hidden">
       <div style={{transform: `rotate(${angle}deg)`}} className="absolute inset-0">
 
         {/* Disc Surface */}
