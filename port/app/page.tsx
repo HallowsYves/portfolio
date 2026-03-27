@@ -1,15 +1,16 @@
 "use client";
 
-import React, { useState } from "react";
-import SimpleDiscView from "@/Components/SimpleDiscView";
 import Player from "@/Components/player";
-// Focused Data
 
 export default function Page() {
-  const [isSpinning, setIsSpinning] = useState(true);
   return (
-    <div>
-      <Player />
-    </div>
+    <main className="min-h-screen w-full bg-black overflow-hidden flex">
+      {/* Left column — CD player */}
+      <div className="flex-[2] flex items-center justify-center p-8">
+        <Player />
+      </div>
+      {/* Right column — placeholder for future content */}
+      <div className="flex-1" />
+    </main>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import { motion, useAnimation, PanInfo } from "framer-motion";
+import { motion, useMotionValue, animate, PanInfo } from "framer-motion";
 import CompactDisc from "@/Components/CompactDisc";
 import { Disc } from "@/types";
 
@@ -9,6 +9,8 @@ export interface DraggableCDProps {
   containerRef: React.RefObject<HTMLDivElement | null>;
   dockRef: React.RefObject<HTMLDivElement | null>;
   disc: Disc;
+  /** Must match CDPlayerDock diameter exactly for correct visual overlap on snap */
+  size: number;
   isDocked: boolean;
   isSpinning: boolean;
   angle: number;
@@ -16,36 +18,39 @@ export interface DraggableCDProps {
   onToggleSpin: () => void;
 }
 
-const SNAP_THRESHOLD = 80;
-
 export default function DraggableCD({
   containerRef,
   dockRef,
   disc,
+  size,
   isDocked,
   isSpinning,
   angle,
   onDock,
   onToggleSpin,
 }: DraggableCDProps) {
-  const cdControls = useAnimation();
   const cdRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
 
-  // When ejected, spring back to starting position
+  // MotionValues give us the *actual* clamped position at any moment —
+  // critical for a correct snap calculation when dragConstraints are active.
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  // Snap threshold: must drag at least halfway across the disc toward the dock
+  const SNAP_THRESHOLD = size * 0.4;
+
+  // Spring back to origin whenever the CD is ejected
   useEffect(() => {
     if (!isDocked) {
-      cdControls.start({
-        x: 0,
-        y: 0,
-        transition: { type: "spring", stiffness: 200, damping: 20 },
-      });
+      animate(x, 0, { type: "spring", stiffness: 200, damping: 20 });
+      animate(y, 0, { type: "spring", stiffness: 200, damping: 20 });
     }
-  }, [isDocked, cdControls]);
+  }, [isDocked, x, y]);
 
   const handleDragEnd = (
     _event: MouseEvent | TouchEvent | PointerEvent,
-    info: PanInfo
+    _info: PanInfo
   ) => {
     setIsDragging(false);
 
@@ -64,19 +69,22 @@ export default function DraggableCD({
     );
 
     if (distance < SNAP_THRESHOLD) {
-      // Shift current motion position by the screen-space gap to center on dock
-      cdControls.start({
-        x: info.offset.x + (dockCenterX - cdCenterX),
-        y: info.offset.y + (dockCenterY - cdCenterY),
-        transition: { type: "spring", stiffness: 300, damping: 25 },
+      // x.get() is the true current motion value (not the raw pointer offset).
+      // Add the remaining screen-space gap to land exactly on the dock center.
+      animate(x, x.get() + (dockCenterX - cdCenterX), {
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+      });
+      animate(y, y.get() + (dockCenterY - cdCenterY), {
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
       });
       onDock();
     } else {
-      cdControls.start({
-        x: 0,
-        y: 0,
-        transition: { type: "spring", stiffness: 200, damping: 20 },
-      });
+      animate(x, 0, { type: "spring", stiffness: 200, damping: 20 });
+      animate(y, 0, { type: "spring", stiffness: 200, damping: 20 });
     }
   };
 
@@ -85,19 +93,25 @@ export default function DraggableCD({
       ref={cdRef}
       drag={!isDocked}
       dragConstraints={containerRef}
-      dragElastic={0.1}
+      dragElastic={0.08}
+      style={{
+        x,
+        y,
+        width: size,
+        height: size,
+        position: "absolute",
+        bottom: 32,
+        left: 32,
+        borderRadius: "50%",
+        // Always keep pointer-events active so the onClick fires when docked
+        pointerEvents: "auto",
+        zIndex: isDragging ? 50 : isDocked ? 10 : 20,
+        cursor: isDocked ? "pointer" : isDragging ? "grabbing" : "grab",
+      }}
       onDragStart={() => setIsDragging(true)}
       onDragEnd={handleDragEnd}
-      animate={cdControls}
       onClick={isDocked ? onToggleSpin : undefined}
       whileDrag={{ scale: 1.05 }}
-      className={`
-        absolute bottom-8 left-8
-        w-32 h-32
-        rounded-full
-        ${isDocked ? "cursor-pointer" : "cursor-grab active:cursor-grabbing"}
-        ${isDragging ? "z-50" : isDocked ? "z-10" : "z-20"}
-      `}
     >
       <CompactDisc disc={disc} isSpinning={isSpinning} angle={angle} />
     </motion.div>
