@@ -74,7 +74,6 @@ function CDPlayerDock({ dockRef, isLoaded }: CDPlayerDockProps) {
       {/* Loaded indicator */}
       {isLoaded && (
         <div className="absolute -bottom-3 left-1/2 -translate-x-1/2">
-          <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
         </div>
       )}
     </div>

@@ -19,8 +19,6 @@ export default function CompactDisc({ disc, angle }: CompactDiscProps) {
         style={{ transform: `rotate(${angle}deg)` }}
       >
         {/* Colored disc surface — can use {disc.color} to apply gradient */}
-        <div className={`absolute inset-0 bg-gradient-to-br opacity-80`} />
-
         {/* Holographic iridescent sheen */}
         <div
           className="absolute inset-0 opacity-25 mix-blend-overlay"
